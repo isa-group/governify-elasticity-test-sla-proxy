@@ -1,0 +1,56 @@
+{
+  "name": "governify-elasticity-test-sla-proxy",
+  "buildOn": "2017-03-30",
+  "version": "0.0.0",
+  "description": "Proxy for governing the elasticity in API's",
+  "homepage": "https://github.com/isa-group/governify-elasticity-test-sla-proxy",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
+    "express": "^4.15.2",
+    "helmet": "^3.5.0",
+    "js-yaml": "^3.8.1",
+    "moment": "^2.17.1",
+    "request": "^2.79.0",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "chai": "^3.5.0",
+    "grunt": "^1.0.1",
+    "grunt-banner": "^0.6.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-dockerize": "0.0.1",
+    "grunt-header": "^1.1.0",
+    "grunt-mocha-test": "^0.13.2",
+    "grunt-release-github": "1.0.4",
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "postinstall": "bower install",
+    "test": "grunt test"
+  },
+  "keywords": [
+    "sla",
+    "proxy",
+    "elasticity",
+    "governance"
+  ],
+  "author": {
+    "name": "ISA group",
+    "web": "http://www.isa.us.es/"
+  },
+  "license": "GPL-3.0+",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/isa-group/governify-elasticity-test-sla-proxy.git",
+    "github": "http://github.com/isa-group/governify-elasticity-test-sla-proxy"
+  },
+  "docker": {
+    "url": "https://hub.docker.com/r/isa-group/governify-elasticity-test-sla-proxy"
+  }
+}

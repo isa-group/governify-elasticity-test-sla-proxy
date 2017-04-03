@@ -1,0 +1,8 @@
+The version <%= pkg.version %> is the latest stable version of <%= pkg.name %> component.
+see [release note](<%= pkg.repository.github %>/releases/tag/<%= pkg.version %>) for details.
+
+For running:
+
+- Download latest version from [<%= pkg.version %>](<%= pkg.repository.github %>/releases/tag/<%= pkg.version %>)
+
+[![Build Status](https://travis-ci.org/<%= pkg.repository.github.replace(/http:\/\/github.com\//,"") %>.svg?branch=master)](https://travis-ci.org/<%= pkg.repository.github %>)
