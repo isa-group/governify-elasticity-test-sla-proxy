@@ -30,6 +30,8 @@ var express = require('express'),
     Promise = require('bluebird'),
     config = require('./configurations/config');
 
+var proxy = require('./proxy/proxy');
+
 /*
  * Export functions and Objects
  */
@@ -48,6 +50,9 @@ function _deploy() {
         app.use(helmet());
         app.use(bodyParser.json());
         app.use('/', express.static(__dirname + '/../public'));
+
+
+        app.use('/api', proxy.doProxy);
 
         var port = process.env.PORT || config.server.port;
 
