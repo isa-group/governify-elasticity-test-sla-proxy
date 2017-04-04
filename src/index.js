@@ -27,10 +27,12 @@ var express = require('express'),
     helmet = require('helmet'),
     bodyParser = require('body-parser'),
     logger = require('./logger/logger'),
+    cors = require('cors'),
     Promise = require('bluebird'),
     config = require('./configurations/config');
 
-var proxy = require('./proxy/proxy');
+var proxy = require('./proxy/proxy'),
+    nodesControllers = require('./controllers/nodes-controllers');
 
 /*
  * Export functions and Objects
@@ -40,35 +42,41 @@ module.exports = {
     undeploy: _undeploy
 };
 
-var server;
+var app = express();
+
+//statics and some middelware
+app.use(helmet());
+app.use(cors());
+app.use(bodyParser.json());
+app.use('/', express.static(__dirname + '/../public'));
+
+//proxy
+app.use('/api', proxy.doProxy);
+
+//nodes endpoint
+app.get('/registry', nodesControllers.getAll);
+app.post('/registry/:type', nodesControllers.create);
+app.delete('/registry/:name', nodesControllers.delete);
+
+var port = process.env.PORT || config.server.port;
 
 function _deploy() {
     return new Promise(function (resolve, reject) {
         logger.info('Set up SLA Proxy');
-        var app = express();
 
-        app.use(helmet());
-        app.use(bodyParser.json());
-        app.use('/', express.static(__dirname + '/../public'));
-
-
-        app.use('/api', proxy.doProxy);
-
-        var port = process.env.PORT || config.server.port;
-
-        server = app.listen(port, function (err) {
+        var server = app.listen(port, function (err) {
             if (err) {
                 logger.error('Error occurs while SLA Proxy was been deployed');
                 reject(err);
             } else {
                 logger.info('SLA Proxy is running on http://localhost:%s', port);
-                resolve();
+                resolve(server);
             }
         });
     });
 }
 
-function _undeploy() {
+function _undeploy(server) {
     return new Promise(function (resolve, reject) {
         logger.info('Turn off SLA Proxy');
         server.close(function (err) {

@@ -65,3 +65,4 @@ githubCredential.json
 
 #Netbeans project folder
 nbproject/
+sandbox*.js
