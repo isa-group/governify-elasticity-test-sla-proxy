@@ -34,7 +34,8 @@ var customLeves = {
     levels: {
         error: 7,
         warning: 8,
-        proxy: 9,
+        proxy: 12,
+        controllers: 12,
         info: 12,
         debug: 13
     },
@@ -42,6 +43,7 @@ var customLeves = {
         error: 'red',
         warning: 'yellow',
         proxy: 'magenta',
+        controllers: 'blue',
         info: 'white',
         debug: 'black'
     }
