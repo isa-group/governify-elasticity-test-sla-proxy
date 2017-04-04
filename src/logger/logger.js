@@ -34,14 +34,14 @@ var customLeves = {
     levels: {
         error: 7,
         warning: 8,
-        custom: 9,
+        proxy: 9,
         info: 12,
         debug: 13
     },
     colors: {
         error: 'red',
         warning: 'yellow',
-        custom: 'magenta',
+        proxy: 'magenta',
         info: 'white',
         debug: 'black'
     }
