@@ -25,55 +25,55 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
  */
 var express = require('express'),
     helmet = require('helmet'),
+    bodyParser = require('body-parser'),
     logger = require('./logger/logger'),
-    moment = require('moment'),
     Promise = require('bluebird'),
     config = require('./configurations/config');
-
-/*
- * If you are going to use express, please include helmet library 
- * in order to increase security in your webapp
- */
-
-var port = process.env.PORT || config.server.port;
-var app = express();
-app.use(helmet());
-app.use('/', express.static(__dirname + '/../public'));
-app.listen(port);
-
 
 /*
  * Export functions and Objects
  */
 module.exports = {
-    myfunction: _myfunction,
-    myPromiseFunction: _myPromiseFunction
+    deploy: _deploy,
+    undeploy: _undeploy
 };
 
+var server;
 
-/*
- * Implement the functions
- */
-function _myfunction(param1, param2) {
+function _deploy() {
+    return new Promise(function (resolve, reject) {
+        logger.info('Set up SLA Proxy');
+        var app = express();
 
-    logger.info('Hello world!');
-    logger.info('Param1: %s', param1);
-    logger.info('Param2: %s', param2);
+        app.use(helmet());
+        app.use(bodyParser.json());
+        app.use('/', express.static(__dirname + '/../public'));
 
-    logger.custom('Date: %s', moment().toISOString());
+        var port = process.env.PORT || config.server.port;
 
-    return param1 + "-" + param2;
-
+        server = app.listen(port, function (err) {
+            if (err) {
+                logger.error('Error occurs while SLA Proxy was been deployed');
+                reject(err);
+            } else {
+                logger.info('SLA Proxy is running on http://localhost:%s', port);
+                resolve();
+            }
+        });
+    });
 }
 
-function _myPromiseFunction(param1, param2) {
-
+function _undeploy() {
     return new Promise(function (resolve, reject) {
-        if (param1 && param2) {
-            resolve(param1 + "-" + param2);
-        } else {
-            reject(new Error("Params are required"));
-        }
+        logger.info('Turn off SLA Proxy');
+        server.close(function (err) {
+            if (err) {
+                logger.error('Error occurs while SLA Proxy was been undeployed');
+                reject();
+            } else {
+                logger.info('SLA Proxy was turned off');
+                resolve();
+            }
+        });
     });
-
 }

@@ -23,17 +23,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 var expect = require('chai').expect;
 var lib = require('../src');
 
+describe('SLA Proxy tests', function () {
+    it('Exports', (done) => {
 
-/*
- * USE MOCHA AND CHAI for testing your code
- */
-describe('First Level test', function () {
-    this.timeout(10000);
-    it('Execute', (done) => {
-
-        var result = lib.myfunction("test", "1");
-
-        expect(result).to.be.equal("test-1");
+        expect(lib.deploy).to.not.equal(null);
+        expect(lib.undeploy).to.not.equal(null);
 
         done();
 
