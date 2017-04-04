@@ -72,7 +72,7 @@ module.exports = function (grunt) {
 
         //Lint JS 
         jshint: {
-            all: ['Gruntfile.js', 'src/**/*.js', 'tests/**/*.js', 'index.js'], //If you want to inspect more file, you change this.
+            all: ['Gruntfile.js', 'src/**/*.js', 'tests/**/*.js', 'server.js'], //If you want to inspect more file, you change this.
             options: {
                 jshintrc: '.jshintrc'
             }
