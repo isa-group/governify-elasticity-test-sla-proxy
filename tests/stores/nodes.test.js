@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
 'use strict';
+process.env.NODE_ENV = "test";
 
 var nodeStore = require('../../src/stores/nodes');
 var expect = require('chai').expect;
