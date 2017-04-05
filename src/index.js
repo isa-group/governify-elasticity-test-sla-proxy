@@ -32,6 +32,7 @@ var express = require('express'),
     config = require('./configurations/config');
 
 var proxy = require('./proxy/proxy'),
+    routesControllers = require('./controllers/routes-controllers'),
     nodesControllers = require('./controllers/nodes-controllers');
 
 /*
@@ -57,6 +58,10 @@ app.use('/api', proxy.doProxy);
 app.get('/registry', nodesControllers.getAll);
 app.post('/registry/:type', nodesControllers.create);
 app.delete('/registry/:name', nodesControllers.delete);
+
+//routes endpoint
+app.get('/registry/routingtable', routesControllers.getRoutingTable);
+app.get('/registry/assignementtable', routesControllers.getAssignementTable);
 
 var port = process.env.PORT || config.server.port;
 

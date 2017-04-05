@@ -1,18 +1,24 @@
 'use strict';
 
+process.env.NODE_ENV = "test";
+
 var server = require('../../src/index');
 
 var expect = require('chai').expect;
 var request = require('request');
 
 
-describe('Node controllers tests', function () {
+describe('Nodes controllers tests', function () {
     var proxy;
     before(function (done) {
         server.deploy().then(function (server) {
             proxy = server;
             done();
         }, done);
+    });
+
+    after(function (done) {
+        server.undeploy(proxy).then(done, done);
     });
 
     it('POST /registry', function (done) {

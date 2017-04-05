@@ -32,6 +32,7 @@ var config = require('../configurations/config');
  * */
 var customLeves = {
     levels: {
+        test: 0,
         error: 7,
         warning: 8,
         proxy: 12,
@@ -40,6 +41,7 @@ var customLeves = {
         debug: 13
     },
     colors: {
+        test: 'red',
         error: 'red',
         warning: 'yellow',
         proxy: 'magenta',

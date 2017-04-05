@@ -11,3 +11,11 @@ development:
     
   loglevel: debug
   logfile: './logs/dev-logs.log'
+
+
+test:
+  server: 
+    port: 3000
+    
+  loglevel: test
+  logfile: './logs/dev-logs.log'
