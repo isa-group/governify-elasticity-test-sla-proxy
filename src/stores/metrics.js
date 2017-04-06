@@ -6,6 +6,9 @@ const REQUESTS_WINDOWS = 1 * 60 * 1000; //1m
 var throughput = 0;
 var throughputPerUser = {};
 
+var totalRequests = 0;
+var totalSuccessRequests = 0;
+
 var requests = {};
 var successRequests = {};
 
@@ -15,6 +18,8 @@ module.exports = {
 
     getAvailability: _getAvailability,
     getThroughput: _getThroughput,
+    getThroughputPerUser: _getThroughputPerUser,
+    getAvailabilityPerUser: _getAvailabilityPerUser,
 
     intervals: {
         throughput: _throughputInterval,
@@ -22,8 +27,42 @@ module.exports = {
     }
 };
 
+function _getAvailabilityPerUser() {
+    var ret = {};
+
+    for (var u in requests) {
+        ret[u] = _getAvailability(u);
+    }
+
+    return ret;
+}
+
 function _getAvailability(user) {
-    return requests[user] ? successRequests[user] / requests[user] : 1;
+    if (user) {
+
+        if (requests[user] > 0) {
+            if (successRequests[user] > 0) {
+                return successRequests[user] / requests[user];
+            } else {
+                return 0;
+            }
+        } else {
+            return 1;
+        }
+
+    } else {
+
+        if (totalRequests > 0) {
+            if (totalSuccessRequests > 0) {
+                return totalSuccessRequests / totalRequests;
+            } else {
+                return 0;
+            }
+        } else {
+            return 1;
+        }
+
+    }
 }
 
 function _getThroughput(user) {
@@ -34,19 +73,32 @@ function _getThroughput(user) {
     }
 }
 
+function _getThroughputPerUser() {
+    return throughputPerUser;
+}
+
 /**
  * requests functions
  */
 function _increaseRequests(user, res) {
-    requests[user] = (requests[user] || 0) + 1;
+    if (!user) {
+        totalRequests++;
+        if (res && res.statusCode < 300) {
+            totalSuccessRequests++;
+        }
+    } else {
+        requests[user] = (requests[user] || 0) + 1;
 
-    if (res && res.statusCode < 300) {
-        successRequests[user] = (successRequests[user] || 0) + 1;
+        if (res && res.statusCode < 300) {
+            successRequests[user] = (successRequests[user] || 0) + 1;
+        }
     }
+
 }
 
 function _clearRequests() {
-    console.log(_getThroughput());
+    totalRequests = 0;
+    totalSuccessRequests = 0;
     requests = {};
     successRequests = {};
 }
