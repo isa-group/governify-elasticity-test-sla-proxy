@@ -46,7 +46,7 @@ function _increaseRequests(user, res) {
 }
 
 function _clearRequests() {
-
+    console.log(_getThroughput());
     requests = {};
     successRequests = {};
 }
