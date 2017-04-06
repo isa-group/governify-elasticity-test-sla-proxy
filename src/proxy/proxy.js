@@ -3,6 +3,7 @@
 var request = require('request'),
     logger = require('../logger/logger'),
     Error = require('../domain/json-error').Error,
+    metricsStore = require('../stores/metrics'),
     urljoin = require('url-join');
 
 module.exports = {
@@ -12,19 +13,35 @@ module.exports = {
 function _doProxy(preProxyReq, preProxyRes) {
     var ip = "aws1617-dab.herokuapp.com";
 
+    var user = preProxyReq.query.user;
     var url = _buildURL(ip, preProxyReq);
-    logger.proxy('Doing proxy TO: %s', url);
+    //logger.proxy('Doing proxy TO: %s', url);
 
-    request({
-        uri: url
-    }, function (err) {
+    if (user) {
 
-        if (err) {
-            logger.error(err.toString());
-            preProxyRes.status(500).json(new Error(500, err.toString()));
-        }
+        request({
+            uri: url
+        }, function (err) {
 
-    }).pipe(preProxyRes);
+            if (err) {
+                metricsStore.increaseRequests(user);
+                logger.error(err.toString());
+                preProxyRes.status(503).json(new Error(503, ip + " not responded"));
+            }
+
+        }).on('response', function (res) {
+
+            metricsStore.increaseThroughput(user);
+            metricsStore.increaseRequests(user, res);
+
+        }).pipe(preProxyRes);
+
+    } else {
+        logger.proxy('UNAUTHORIZE request', url);
+
+        metricsStore.increaseThroughput(user);
+        preProxyRes.status(401).json(new Error(401, 'UNAUTHORIZE'));
+    }
 
 }
 
