@@ -36,7 +36,7 @@ describe('Metrics strore tests', function () {
 
         }, 1000);
 
-        setTimeout(done, 5500);
+        setTimeout(done, 5200);
     });
 
     after(function (done) {
