@@ -30,6 +30,10 @@ describe('Metrics strore tests', function () {
                 statusCode: 200
             });
 
+            metricsStore.increaseRequests('t02', {
+                statusCode: 500
+            });
+
         }, 1000);
 
         setTimeout(done, 5500);
@@ -42,6 +46,11 @@ describe('Metrics strore tests', function () {
 
     it('Check proxy throughput', (done) => {
         expect(metricsStore.getThroughput()).to.equal(3);
+        done();
+    });
+
+    it('Check proxy availability', (done) => {
+        expect(metricsStore.getThroughput()).to.not.equal(1);
         done();
     });
 
@@ -62,6 +71,11 @@ describe('Metrics strore tests', function () {
 
     it('Check availability == 1', (done) => {
         expect(metricsStore.getAvailability('t01')).to.equal(1);
+        done();
+    });
+
+    it('Check availability == 0', (done) => {
+        expect(metricsStore.getAvailability('t02')).to.equal(0);
         done();
     });
 

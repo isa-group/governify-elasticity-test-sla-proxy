@@ -24,7 +24,8 @@ function _doProxy(preProxyReq, preProxyRes) {
         }, function (err) {
 
             if (err) {
-                metricsStore.increaseRequests(user);
+                metricsStore.increaseRequests(user); //per user
+                metricsStore.increaseRequests(null); //total
                 logger.error(err.toString());
                 preProxyRes.status(503).json(new Error(503, ip + " not responded"));
             }
@@ -32,7 +33,8 @@ function _doProxy(preProxyReq, preProxyRes) {
         }).on('response', function (res) {
 
             metricsStore.increaseThroughput(user);
-            metricsStore.increaseRequests(user, res);
+            metricsStore.increaseRequests(user, res); //per user
+            metricsStore.increaseRequests(null, res); //total
 
         }).pipe(preProxyRes);
 

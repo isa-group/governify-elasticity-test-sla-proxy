@@ -33,6 +33,7 @@ var express = require('express'),
 
 var proxy = require('./proxy/proxy'),
     routesControllers = require('./controllers/routes-controllers'),
+    metricsControllers = require('./controllers/metrics-controllers'),
     nodesControllers = require('./controllers/nodes-controllers');
 
 /*
@@ -62,6 +63,15 @@ app.delete('/registry/:name', nodesControllers.delete);
 //routes endpoint
 app.get('/registry/routingtable', routesControllers.getRoutingTable);
 app.get('/registry/assignementtable', routesControllers.getAssignementTable);
+
+//metrics endpoint
+app.get('/metrics', metricsControllers.getAll);
+app.get('/metrics/throughput', metricsControllers.getThroughput);
+app.get('/metrics/throughput/:user', metricsControllers.getThroughputUser);
+app.get('/metrics/availability', metricsControllers.getAvailability);
+app.get('/metrics/availability/:user', metricsControllers.getAvailabilityUser);
+//throughput levels
+
 
 var port = process.env.PORT || config.server.port;
 
