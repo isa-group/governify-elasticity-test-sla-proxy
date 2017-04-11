@@ -8,7 +8,9 @@ module.exports = {
     assigneLevel: _assigneLevel,
 
     getRoutingTable: _getRoutingTable,
-    getAssignementTable: _getAssignementTable
+    getAssignementTable: _getAssignementTable,
+
+    getLevel: _getLevel
 };
 
 function _getRoutingTable() {
@@ -25,4 +27,8 @@ function _routeToLevel(user, level) {
 
 function _assigneLevel(user, level) {
     levelAssignementTable[user] = level;
+}
+
+function _getLevel(user) {
+    return levelAssignementTable[user];
 }

@@ -37,6 +37,7 @@ var customLeves = {
         warning: 8,
         proxy: 12,
         controllers: 12,
+        routingManager: 12,
         info: 12,
         debug: 13
     },
@@ -46,6 +47,7 @@ var customLeves = {
         warning: 'yellow',
         proxy: 'magenta',
         controllers: 'blue',
+        routingManager: 'white',
         info: 'white',
         debug: 'black'
     }
