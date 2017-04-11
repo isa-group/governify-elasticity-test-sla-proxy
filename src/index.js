@@ -34,6 +34,7 @@ var express = require('express'),
 var proxy = require('./proxy/proxy'),
     routesControllers = require('./controllers/routes-controllers'),
     metricsControllers = require('./controllers/metrics-controllers'),
+    configsControllers = require('./controllers/configs-controllers'),
     nodesControllers = require('./controllers/nodes-controllers');
 
 /*
@@ -72,6 +73,9 @@ app.get('/metrics/availability', metricsControllers.getAvailability);
 app.get('/metrics/availability/:user', metricsControllers.getAvailabilityUser);
 //throughput levels
 
+//configs endpoint
+app.get('/configs', configsControllers.get);
+app.post('/configs', configsControllers.post);
 
 var port = process.env.PORT || config.server.port;
 

@@ -1,6 +1,29 @@
 production:
   server: 
     port: 8080
+  
+  urls: 
+    rsybl: "http://192.1.1.15:8280/rSYBL/"  
+    store: "http://datastore-research-governify.herokuapp.com/api/v5/"
+    mela: "http://192.1.1.15:8180/MELA-AnalysisService/"
+
+  governance:
+
+    service: 
+      id: unknown
+      unitTh: unknown
+      scalable: false
+
+    levels: []
+
+    elasticitySpeed: {}
+
+    routingSpeed:
+      l00: 
+        upLevelSpeed: 0.7
+        downLevelSpeed: 0.8
+
+    minInstances: {}
 
   loglevel: info
   logfile: './logs/pro-logs.log'
@@ -8,7 +31,30 @@ production:
 development:
   server: 
     port: 3000
-    
+  
+  urls: 
+    rsybl: "http://192.1.1.15:8280/rSYBL/"  
+    store: "http://datastore-research-governify.herokuapp.com/api/v5/"
+    mela: "http://192.1.1.15:8180/MELA-AnalysisService/"
+
+  governance:
+
+    service: 
+      id: unknown
+      unitTh: unknown
+      scalable: false
+
+    levels: []
+
+    elasticitySpeed: {}
+
+    routingSpeed:
+      l00: 
+        upLevelSpeed: 0.7
+        downLevelSpeed: 0.8
+        
+    minInstances: {}
+
   loglevel: debug
   logfile: './logs/dev-logs.log'
 
@@ -16,6 +62,29 @@ development:
 test:
   server: 
     port: 3000
-    
+  
+  urls: 
+    rsybl: "http://192.1.1.15:8280/rSYBL/"  
+    store: "http://datastore-research-governify.herokuapp.com/api/v5/"
+    mela: "http://192.1.1.15:8180/MELA-AnalysisService/"
+
+  governance:
+
+    service: 
+      id: unknown
+      unitTh: unknown
+      scalable: false
+
+    levels: []
+
+    elasticitySpeed: {}
+
+    routingSpeed:
+      l00: 
+        upLevelSpeed: 0.7
+        downLevelSpeed: 0.8
+        
+    minInstances: {}
+
   loglevel: test
   logfile: './logs/dev-logs.log'
