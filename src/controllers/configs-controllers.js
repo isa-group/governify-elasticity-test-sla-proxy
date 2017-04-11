@@ -1,6 +1,7 @@
 'use strict';
 
 var config = require('../configurations/config'),
+    logger = require('../logger/logger'),
     Error = require('../domain/json-error').Error;
 
 module.exports = {
@@ -10,8 +11,11 @@ module.exports = {
 
 function _post(req, res) {
     var newConfig = req.body;
+    logger.controllers("New request to set proxy configuration");
+    logger.debug(JSON.stringify(newConfig, null, 2));
 
     if (!newConfig || !newConfig.id) {
+        logger.error("Bad request, review your body.");
         res.status(400).json({
             code: 400,
             message: "Bad request, review your body."
@@ -19,13 +23,16 @@ function _post(req, res) {
     } else {
         //do everything necessary
         //store url
+        logger.controllers("PROCESS new config");
         if (!newConfig.datastore) {
+            logger.error('BAD REQUEST: datastore is require');
             return res.status(400).json(new Error(400, 'BAD REQUEST: datastore is require'));
         }
         config.urls.store = newConfig.datastore;
 
         //static configurations
         if (!newConfig.id || !newConfig.instanceLimit || !newConfig.updateElasticity) {
+            logger.error('BAD REQUEST: id, instanceLimit and updateElasticity are require');
             return res.status(400).json(new Error(400, 'BAD REQUEST: id, instanceLimit and updateElasticity are require'));
         }
         config.governance.service.id = newConfig.id;
@@ -34,6 +41,7 @@ function _post(req, res) {
 
         //calculate rates        
         if (!newConfig.levels || !newConfig.initialInstances || !newConfig.elasticitySpeed || !newConfig.routingSpeed) {
+            logger.error('BAD REQUEST: levels, initialInstances, elasticitySpeed, routingSpeed and initialInstances are required');
             return res.status(400).json(new Error(400, 'BAD REQUEST: levels, initialInstances, elasticitySpeed, routingSpeed and initialInstances are required'));
         }
         config.governance.levels = [];
@@ -59,10 +67,12 @@ function _post(req, res) {
         }
 
         res.json();
+        logger.controllers("Successful SET configuration");
     }
 }
 
 function _get(req, res) {
+    logger.controllers("New request to get proxy configuration");
     res.json({
         urls: config.urls,
         governance: config.governance

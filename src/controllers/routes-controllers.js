@@ -10,10 +10,20 @@ module.exports = {
 
 function _getAssignementTable(req, res) {
     logger.controllers("New request to get AssignementTable");
-    res.json(routesStore.getAssignementTable());
+    try {
+        res.json(routesStore.getAssignementTable());
+    } catch (e) {
+        logger.error(e.toString());
+        res.status(500).json(new Error(500, e.toString()));
+    }
 }
 
 function _getRoutingTable(req, res) {
     logger.controllers("New request to get RoutingTable");
-    res.json(routesStore.getRoutingTable());
+    try {
+        res.json(routesStore.getRoutingTable());
+    } catch (e) {
+        logger.error(e.toString());
+        res.status(500).json(new Error(500, e.toString()));
+    }
 }
