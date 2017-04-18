@@ -12,13 +12,19 @@ var totalSuccessRequests = 0;
 var requests = {};
 var successRequests = {};
 
+var availability = 1;
+var availabilityPerUser = {};
+
 module.exports = {
     increaseThroughput: _increaseThroughput,
     increaseRequests: _increaseRequests,
 
-    getAvailability: _getAvailability,
+    calculateAvailability: _calculateAvailability,
     getThroughput: _getThroughput,
     getThroughputPerUser: _getThroughputPerUser,
+    calculateAvailabilityPerUser: _calculateAvailabilityPerUser,
+
+    getAvailability: _getAvailability,
     getAvailabilityPerUser: _getAvailabilityPerUser,
 
     intervals: {
@@ -27,17 +33,29 @@ module.exports = {
     }
 };
 
+function _getAvailability(user) {
+    if (user) {
+        return availabilityPerUser[user] !== 0 ? availabilityPerUser[user] || 1 : availabilityPerUser[user];
+    } else {
+        return availability;
+    }
+}
+
 function _getAvailabilityPerUser() {
+    return availabilityPerUser;
+}
+
+function _calculateAvailabilityPerUser() {
     var ret = {};
 
     for (var u in requests) {
-        ret[u] = _getAvailability(u);
+        ret[u] = _calculateAvailability(u);
     }
 
     return ret;
 }
 
-function _getAvailability(user) {
+function _calculateAvailability(user) {
     if (user) {
 
         if (requests[user] > 0) {
@@ -97,6 +115,9 @@ function _increaseRequests(user, res) {
 }
 
 function _clearRequests() {
+    availability = _calculateAvailability();
+    availabilityPerUser = _calculateAvailabilityPerUser();
+
     totalRequests = 0;
     totalSuccessRequests = 0;
     requests = {};

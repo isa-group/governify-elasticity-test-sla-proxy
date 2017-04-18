@@ -14,7 +14,8 @@ production:
       unitTh: unknown
       scalable: false
 
-    levels: []
+    levels:
+      - 'l00'
 
     elasticitySpeed: {}
 
@@ -35,7 +36,7 @@ development:
   urls: 
     rsybl: "http://192.1.1.15:8280/rSYBL/"  
     store: "http://datastore-research-governify.herokuapp.com/api/v5/"
-    mela: "http://192.1.1.15:8180/MELA-AnalysisService/"
+    mela: "http://localhost:8180/MELA-AnalysisService/"
 
   governance:
 
@@ -44,7 +45,8 @@ development:
       unitTh: unknown
       scalable: false
 
-    levels: []
+    levels:
+      - 'l00'
 
     elasticitySpeed: {}
 
@@ -75,7 +77,8 @@ test:
       unitTh: unknown
       scalable: false
 
-    levels: []
+    levels:
+      - 'l00'
 
     elasticitySpeed: {}
 

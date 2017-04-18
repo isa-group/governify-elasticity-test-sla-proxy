@@ -35,7 +35,7 @@ describe('Routes strore tests', function () {
 
     it('GET routing table', (done) => {
 
-        var rTable = routesStore.getAssignementTable();
+        var rTable = routesStore.getRoutingTable();
 
         expect(rTable.t00).to.not.equal(null);
         expect(rTable.t01).to.not.equal(null);

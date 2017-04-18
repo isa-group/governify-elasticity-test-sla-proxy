@@ -29,7 +29,9 @@ describe('Routes controllers tests', function () {
             } else if (res.statusCode != 200) {
                 done(new Error("status code is not correct"));
             } else {
-                expect(body).to.eql({});
+                expect(body).to.eql({
+                    t00: 'l00'
+                });
                 expect(res.statusCode).to.equal(200);
                 done();
             }
@@ -46,7 +48,9 @@ describe('Routes controllers tests', function () {
             } else if (res.statusCode != 200) {
                 done(new Error("status code is not correct"));
             } else {
-                expect(body).to.eql({});
+                expect(body).to.eql({
+                    t00: 'l00'
+                });
                 expect(res.statusCode).to.equal(200);
                 done();
             }

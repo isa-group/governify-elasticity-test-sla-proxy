@@ -1,4 +1,5 @@
 'use strict';
+var config = require('../configurations/config');
 
 var levelRoutingTable = {};
 var levelAssignementTable = {};
@@ -30,5 +31,13 @@ function _assigneLevel(user, level) {
 }
 
 function _getLevel(user) {
-    return levelAssignementTable[user];
+    var ret = levelAssignementTable[user];
+    if (!ret) {
+        levelRoutingTable[user] = config.governance.levels[0];
+        levelAssignementTable[user] = config.governance.levels[0];
+
+        ret = levelAssignementTable[user];
+    }
+
+    return ret;
 }

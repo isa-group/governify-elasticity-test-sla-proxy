@@ -8,7 +8,7 @@ var expect = require('chai').expect;
 var request = require('request');
 
 
-describe('Metrics controllers tests', function () {
+describe('Config controllers tests', function () {
     var proxy;
     before(function (done) {
         this.timeout(7000);
@@ -41,7 +41,7 @@ describe('Metrics controllers tests', function () {
                 expect(body.governance.service.unitTh).to.equal("unknown");
                 expect(body.governance.service.scalable).to.equal(false);
 
-                expect(body.governance.levels.length).to.equal(0);
+                expect(body.governance.levels.length).to.equal(1);
                 expect(body.governance.elasticitySpeed.l00).to.equal(undefined);
                 expect(body.governance.routingSpeed.l00.upLevelSpeed).to.equal(0.7);
                 expect(body.governance.routingSpeed.l00.downLevelSpeed).to.equal(0.8);

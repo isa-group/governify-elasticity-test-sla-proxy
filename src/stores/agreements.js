@@ -1,6 +1,6 @@
 'use strict';
 
-var storeClient = require(''),
+var storeClient = require('../clients/datastore-client'),
     logger = require('../logger/logger');
 
 var users = {};

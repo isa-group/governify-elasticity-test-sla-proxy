@@ -4,80 +4,105 @@ var agreementStore = require('../stores/agreements'),
     routesStore = require('../stores/routes'),
     metricsStore = require('../stores/metrics'),
     logger = require('../logger/logger'),
+    melaClient = require('../clients/mela-client'),
+    Promise = require('bluebird'),
     config = require('../configurations/config');
 
-const ROUTING_INTERVAL = 2;
+const ROUTING_INTERVAL = 4;
 const ROUTING_BY = "MinAvailability";
 
 var calculateRoutesInterval;
 
 module.exports = {
-    startRouting: _startRouting
+    startRouting: _startRouting,
+    stopRouting: _stopRouting
 };
+
+function _stopRouting() {
+    clearInterval(calculateRoutesInterval);
+}
 
 function _startRouting() {
     calculateRoutesInterval = setInterval(_routing, ROUTING_INTERVAL * 1000);
 }
 
 function _routing() {
-    var routingSpeed = config.governance.routingSpeed;
+    var routingSpeedLevels = config.governance.routingSpeed;
 
     var users = agreementStore.get();
+    var userNewLevel = [];
     for (var u in users) {
+        logger.info("Deciding route for user=" + u);
         var agreement = users[u];
         var property = agreement.terms.metrics[ROUTING_BY];
 
-        var currentLevel = routesStore.getLevel(u) || config.governance.levels[0];
-        routingSpeed = routingSpeed[currentLevel];
+        logger.info("With property: " + JSON.stringify(property, null, 2));
+        var currentLevel = routesStore.getLevel(u);
 
+        var routingSpeed = routingSpeedLevels[currentLevel];
         var currentPropertyValue = metricsStore.getAvailability(u);
 
+        logger.info("Values: current=%s, min=%s, upLevel=%s, downLevel=%s", currentPropertyValue * 100, property.value, routingSpeed.upLevelSpeed, routingSpeed.downLevelSpeed);
         var upLevel = (currentPropertyValue * 100) < property.value + (routingSpeed.upLevelSpeed * (100 - property.value));
-        var downLevel = (currentPropertyValue * 100) > property.value + (routingSpeed.downLevelSpeed * (100 - property.value));
+        var downLevel = (currentPropertyValue * 100) >= property.value + (routingSpeed.downLevelSpeed * (100 - property.value));
 
-
-        var index = config.governance.levels.indexOf(currentLevel);
-        if (upLevel && index != config.governance.levels.length - 1) {
-            index++;
-        } else if (downLevel && index !== 0) {
-            index--;
+        var currentIndex = config.governance.levels.indexOf(currentLevel);
+        var newindex = parseInt(config.governance.levels.indexOf(currentLevel));
+        if (upLevel && newindex != config.governance.levels.length - 1) {
+            newindex++;
+        } else if (downLevel && newindex !== 0) {
+            newindex--;
         }
 
-        routesStore.assigneLevel(u, config.governance.levels[index]);
-        _levelIsPrepared(index).then(function (prepared) {
-            var attemp = 0;
-            var inter;
-            if (prepared) {
-                routesStore.routeToLevel(u, index);
-            } else {
-                inter = setInterval(function () {
-                    _levelIsPrepared(index).then(function (prepared) {
-                        if (prepared) {
-                            routesStore.routeToLevel(u, index);
-                            clearInterval(inter);
-                            attemp++;
-                        } else if (attemp > 2) {
-                            routesStore.routeToLevel(u, index);
-                            clearInterval(inter);
-                        }
-                    });
-                }, 40 * 1000);
-            }
-        }, function (err) {
-            logger.error(err.toString());
-        });
-
+        if (currentIndex !== newindex) {
+            logger.info("Decided to route user=" + u);
+            userNewLevel.push({
+                user: u,
+                level: newindex
+            });
+        }
     }
 
-    logger.routingManager("Update routes: " + JSON.stringify(routesStore.getAssignementTable(), null, 2));
+    Promise.each(userNewLevel, function (element) {
+        return _changeLevelProccess(element.user, element.level);
+    });
+
+}
+
+function _changeLevelProccess(user, newindex) {
+    return new Promise(function (resolve, reject) {
+
+        _levelIsPrepared(newindex).then(function (prepared) {
+            logger.routingManager("User=%s assigned to level=%s", user, config.governance.levels[newindex]);
+            routesStore.assigneLevel(user, config.governance.levels[newindex]);
+
+            if (prepared) {
+                logger.routingManager("Level prepared, user=%s routed to level=%s", user, config.governance.levels[newindex]);
+                routesStore.routeToLevel(user, config.governance.levels[newindex]);
+                resolve();
+            } else {
+                logger.routingManager("Level is not prepared, wait 90s to route");
+                setTimeout(function () {
+                    logger.routingManager("Waited 90s, user=%s routed to level=%s", user, config.governance.levels[newindex]);
+                    routesStore.routeToLevel(user, config.governance.levels[newindex]);
+                    resolve();
+                }, 90 * 1000);
+            }
+
+        }, reject);
+    });
 }
 
 function _levelIsPrepared(index) {
     return new Promise(function (resolve, reject) {
-        //implement melaClient
-        melaClient.getMetricOfServiceUnit(config.governance.service.id, config.governance.levels[index], "numberOfVMs").then(function (numberOfVMs) {
+        logger.routingManager('GET info from MELA Client');
+        melaClient.getMetricOfServiceUnit(config.governance.levels[index], "numberOfVMs").then(function (numberOfVMs) {
             //implement getThroughputInPerLevel
-            var thAssigned = metricsStore.getThroughputInPerLevel()[config.governance.levels[index]] || 1;
+            if (!numberOfVMs || numberOfVMs === 0) {
+                return reject(1);
+            }
+            var thAssigned = _getThroughputInLevel(config.governance.levels[index]) || 1;
+            logger.routingManager('Throughput in level %s, is: %s', config.governance.levels[index], thAssigned);
 
             if (thAssigned / config.governance.service.unitTh > numberOfVMs) {
                 resolve(false);
@@ -87,4 +112,18 @@ function _levelIsPrepared(index) {
 
         }, reject);
     });
+}
+
+function _getThroughputInLevel(level) {
+    var assignementTable = routesStore.getAssignementTable();
+    var th = 0;
+
+    for (var user in assignementTable) {
+        var l = assignementTable[user];
+        if (l === level) {
+            th += metricsStore.getThroughput(user);
+        }
+    }
+
+    return th;
 }
