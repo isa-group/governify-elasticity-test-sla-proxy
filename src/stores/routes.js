@@ -1,4 +1,5 @@
 'use strict';
+var config = require('../configurations/config');
 
 var levelRoutingTable = {};
 var levelAssignementTable = {};
@@ -8,7 +9,9 @@ module.exports = {
     assigneLevel: _assigneLevel,
 
     getRoutingTable: _getRoutingTable,
-    getAssignementTable: _getAssignementTable
+    getAssignementTable: _getAssignementTable,
+
+    getLevel: _getLevel
 };
 
 function _getRoutingTable() {
@@ -25,4 +28,16 @@ function _routeToLevel(user, level) {
 
 function _assigneLevel(user, level) {
     levelAssignementTable[user] = level;
+}
+
+function _getLevel(user) {
+    var ret = levelAssignementTable[user];
+    if (!ret) {
+        levelRoutingTable[user] = config.governance.levels[0];
+        levelAssignementTable[user] = config.governance.levels[0];
+
+        ret = levelAssignementTable[user];
+    }
+
+    return ret;
 }

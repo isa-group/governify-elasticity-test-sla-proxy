@@ -8,7 +8,7 @@ describe('Metrics strore tests', function () {
 
     var interval;
     before(function (done) {
-        this.timeout(7000);
+        this.timeout(61000);
         interval = setInterval(function () {
             metricsStore.increaseThroughput('t00');
 
@@ -36,7 +36,7 @@ describe('Metrics strore tests', function () {
 
         }, 1000);
 
-        setTimeout(done, 5200);
+        setTimeout(done, 60200);
     });
 
     after(function (done) {

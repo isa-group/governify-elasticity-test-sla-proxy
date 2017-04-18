@@ -4,6 +4,7 @@ var request = require('request'),
     logger = require('../logger/logger'),
     Error = require('../domain/json-error').Error,
     metricsStore = require('../stores/metrics'),
+    agreementStore = require('../stores/agreements'),
     urljoin = require('url-join');
 
 module.exports = {
@@ -18,7 +19,7 @@ function _doProxy(preProxyReq, preProxyRes) {
     //logger.proxy('Doing proxy TO: %s', url);
 
     if (user) {
-
+        agreementStore.put(user);
         request({
             uri: url
         }, function (err) {
