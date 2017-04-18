@@ -39,7 +39,8 @@ describe('Node strore tests', function () {
 
         newNodeName = nodeStore.put('172.0.2.17:8080', 'l00');
 
-        expect(nodeStore.get().length).to.equal(4);
+        expect(nodeStore.get().l00.length).to.equal(2);
+        expect(nodeStore.get().l01.length).to.equal(2);
         expect(newNodeName).to.not.equal(null);
 
         done();
@@ -50,7 +51,8 @@ describe('Node strore tests', function () {
 
         var name = nodeStore.put('172.0.2.17:8080', 'l00');
 
-        expect(nodeStore.get().length).to.equal(4);
+        expect(nodeStore.get().l00.length).to.equal(2);
+        expect(nodeStore.get().l01.length).to.equal(2);
         expect(name).to.equal(newNodeName);
 
         done();
@@ -61,7 +63,8 @@ describe('Node strore tests', function () {
 
         var node = nodeStore.deleteOne(newNodeName);
 
-        expect(nodeStore.get().length).to.equal(3);
+        expect(nodeStore.get().l00.length).to.equal(1);
+        expect(nodeStore.get().l01.length).to.equal(2);
         expect(node.name).to.equal(newNodeName);
 
         done();

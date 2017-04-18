@@ -4,7 +4,7 @@ production:
   
   urls: 
     rsybl: "http://192.1.1.15:8280/rSYBL/"  
-    store: "http://datastore-research-governify.herokuapp.com/api/v5/"
+    store: "http://192.1.1.15:3000/api/v5/"
     mela: "http://192.1.1.15:8180/MELA-AnalysisService/"
 
   governance:
@@ -35,7 +35,7 @@ development:
   
   urls: 
     rsybl: "http://localhost:8280/rSYBL/"  
-    store: "http://datastore-research-governify.herokuapp.com/api/v5/"
+    store: "http://localhost:3001/api/v5/"
     mela: "http://localhost:8180/MELA-AnalysisService/"
 
   governance:
