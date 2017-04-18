@@ -62,7 +62,7 @@ describe('Nodes controllers tests', function () {
             } else if (res.statusCode != 200) {
                 done(new Error("status code is not correct"));
             } else {
-                expect(body.length).to.equal(1);
+                expect(body.l00.length).to.equal(1);
                 done();
             }
         });

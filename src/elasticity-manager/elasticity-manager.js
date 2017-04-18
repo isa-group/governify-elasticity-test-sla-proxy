@@ -16,7 +16,7 @@ module.exports = {
 var elasticityManagementInterval;
 
 function _startElasticityManagement() {
-    elasticityManagementInterval = setInterval(_elasticityManagement, ELASTICITY_TIME * 100);
+    elasticityManagementInterval = setInterval(_elasticityManagement, ELASTICITY_TIME * 1000);
 }
 
 function _stopElasticityManagement() {
@@ -25,7 +25,7 @@ function _stopElasticityManagement() {
 
 function _elasticityManagement() {
     logger.elasticityManager('Calculate rSYBL rules.');
-    if (config.governance.service) {
+    if (config.governance.service.scalable) {
         var rsybl = rsyblClient.getRsyblInfo();
 
         var elasticitySpeeds = config.governance.elasticitySpeed;

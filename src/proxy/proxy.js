@@ -5,6 +5,7 @@ var request = require('request'),
     Error = require('../domain/json-error').Error,
     metricsStore = require('../stores/metrics'),
     agreementStore = require('../stores/agreements'),
+    loadBalancer = require('./load-balancer'),
     urljoin = require('url-join');
 
 module.exports = {
@@ -12,11 +13,11 @@ module.exports = {
 };
 
 function _doProxy(preProxyReq, preProxyRes) {
-    var ip = "aws1617-dab.herokuapp.com";
 
     var user = preProxyReq.query.user;
+    var ip = loadBalancer.balance(null, user);
+
     var url = _buildURL(ip, preProxyReq);
-    //logger.proxy('Doing proxy TO: %s', url);
 
     if (user) {
         agreementStore.put(user);
