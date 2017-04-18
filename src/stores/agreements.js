@@ -8,7 +8,8 @@ var users = {};
 module.exports = {
     put: _put,
     get: _get,
-    getOne: _getOne
+    getOne: _getOne,
+    getMetricValue: _getMetricValue
 };
 
 function _put(user) {
@@ -27,4 +28,8 @@ function _get() {
 
 function _getOne(user) {
     return users[user];
+}
+
+function _getMetricValue(user, metric) {
+    return users[user].terms.metrics[metric].value;
 }

@@ -1,10 +1,15 @@
 'use strict';
 
+var clone = require('clone');
+
 const THROUGHPUT_WINDOWS = 1 * 1000; //1s
 const REQUESTS_WINDOWS = 1 * 60 * 1000; //1m
 
 var throughput = 0;
 var throughputPerUser = {};
+
+var countThroughput = 0;
+var countThroughputPerUser = {};
 
 var totalRequests = 0;
 var totalSuccessRequests = 0;
@@ -131,14 +136,17 @@ var _requestsInterval = setInterval(_clearRequests, REQUESTS_WINDOWS);
  */
 function _increaseThroughput(user) {
     //Update proxy throughput
-    throughput++;
+    countThroughput++;
     //Update throughput per user
-    throughputPerUser[user] = (throughputPerUser[user] || 0) + 1;
+    countThroughputPerUser[user] = (countThroughputPerUser[user] || 0) + 1;
 }
 
 function _clearThroughput() {
-    throughput = 0;
-    throughputPerUser = {};
+    throughput = clone(countThroughput);
+    throughputPerUser = clone(countThroughputPerUser);
+
+    countThroughput = 0;
+    countThroughputPerUser = {};
 }
 
 var _throughputInterval = setInterval(_clearThroughput, THROUGHPUT_WINDOWS);

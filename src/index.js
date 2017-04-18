@@ -37,7 +37,8 @@ var proxy = require('./proxy/proxy'),
     configsControllers = require('./controllers/configs-controllers'),
     nodesControllers = require('./controllers/nodes-controllers');
 
-var routingManager = require('./routing-manager/routing-manager');
+var routingManager = require('./routing-manager/routing-manager'),
+    elasticityManager = require('./elasticity-manager/elasticity-manager');
 /*
  * Export functions and Objects
  */
@@ -92,6 +93,7 @@ function _deploy() {
                 logger.info('SLA Proxy is running on http://localhost:%s', port);
                 resolve(server);
                 routingManager.startRouting();
+                elasticityManager.startElasticityManagement();
             }
         });
     });
@@ -107,6 +109,7 @@ function _undeploy(server) {
             } else {
                 logger.info('SLA Proxy was turned off');
                 routingManager.stopRouting();
+                elasticityManager.stopElasticityManagement();
                 resolve();
             }
         });
