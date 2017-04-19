@@ -1,3 +1,9 @@
+### v0.0.2 - 2017-31-19
+
+- [#29](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/29) - Add Copyright notices and contact files
+
+- [#28](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/28) - Add short description to README.md
+
 ### v0.0.1 - 2017-31-18
 
 - [#26](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/26) - Add loadBalancer and fix some bug
