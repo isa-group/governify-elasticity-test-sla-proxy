@@ -1,5 +1,8 @@
 # Governify Elasticity Test SLA Proxy
 
+This repository contains the main component of an SLA-governed elastic Topology. *Governify Elasticity Test SLA Proxy* balances the load
+between different quality levels and it builds their elasticity rules. Mixing both, routing management and elasticity management, it tries to fulfill the SLOs that are agreed in SLA with tenants.
+
 ## Copyright notice
 
 All including documentation and code are copyrighted and the copyright is owned by [ISA Group](http://www.isa.us.es), 
