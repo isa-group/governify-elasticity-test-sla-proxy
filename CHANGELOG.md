@@ -1,3 +1,11 @@
+### v0.0.3 - 2017-31-20
+
+- [#35](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/35) - Fix `Cannot read property 'terms' of undefined` when route was calculating
+
+- [#34](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/34) - Fix `Cannot read property '0' of undefined` when elasticity rules was updating
+
+- [#33](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/33) - Fix Availability error
+
 ### v0.0.2 - 2017-31-19
 
 - [#29](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/29) - Add Copyright notices and contact files
