@@ -51,12 +51,17 @@ module.exports = {
 
     getAvailability: _getAvailability,
     getAvailabilityPerUser: _getAvailabilityPerUser,
+    setUpAvailability: _setUpAvailability,
 
     intervals: {
         throughput: _throughputInterval,
         requests: _requestsInterval
     }
 };
+
+function _setUpAvailability(user) {
+    availabilityPerUser[user] = 1;
+}
 
 function _getAvailability(user) {
     if (user) {

@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 'use strict';
 
 var storeClient = require('../clients/datastore-client'),
+    metricsStore = require('../stores/metrics'),
     logger = require('../logger/logger');
 
 var users = {};
@@ -36,6 +37,7 @@ function _put(user) {
     if (!users[user]) {
         storeClient.getAgreementById(user).then(function (agreement) {
             users[user] = agreement;
+            metricsStore.setUpAvailability(user);
         }, function (err) {
             logger.error(err.toString());
         });
