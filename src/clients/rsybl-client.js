@@ -86,9 +86,20 @@ function _putRsyblInfo(rsybl) {
 
 function _updateRsyblRule(rsybl, rules) {
     for (var l in rules) {
-        rsybl.CloudService.ServiceTopology[0].ServiceUnit.filter(function (element) {
+        var su = rsybl.CloudService.ServiceTopology[0].ServiceUnit.filter(function (element) {
             return element.$.id.indexOf(l) !== -1 && element.$.id.indexOf('proxy') === -1;
-        })[0].SYBLDirective[0].$.Strategies = rules[l];
+        })[0];
+
+        if (su.SYBLDirective) {
+            su.SYBLDirective[0].$.Strategies = rules[l];
+        } else {
+            su.SYBLDirective = [{
+                '$': {
+                    'Strategies': rules[l]
+                }
+            }];
+        }
+
     }
 
 }
