@@ -52,35 +52,39 @@ function _routing() {
     var users = agreementStore.get();
     var userNewLevel = [];
     for (var u in users) {
-        logger.info("Deciding route for user=" + u);
+
         var agreement = users[u];
-        var property = agreement.terms.metrics[ROUTING_BY];
 
-        logger.info("With property: " + JSON.stringify(property, null, 2));
-        var currentLevel = routesStore.getLevel(u);
+        if (agreement) {
+            logger.info("Deciding route for user=" + u);
+            var property = agreement.terms.metrics[ROUTING_BY];
+            logger.info("With property: " + JSON.stringify(property, null, 2));
+            var currentLevel = routesStore.getLevel(u);
 
-        var routingSpeed = routingSpeedLevels[currentLevel];
-        var currentPropertyValue = metricsStore.getAvailability(u);
+            var routingSpeed = routingSpeedLevels[currentLevel];
+            var currentPropertyValue = metricsStore.getAvailability(u);
 
-        logger.info("Values: current=%s, min=%s, upLevel=%s, downLevel=%s", currentPropertyValue * 100, property.value, routingSpeed.upLevelSpeed, routingSpeed.downLevelSpeed);
-        var upLevel = (currentPropertyValue * 100) < property.value + (routingSpeed.upLevelSpeed * (100 - property.value));
-        var downLevel = (currentPropertyValue * 100) >= property.value + (routingSpeed.downLevelSpeed * (100 - property.value));
+            logger.info("Values: current=%s, min=%s, upLevel=%s, downLevel=%s", currentPropertyValue * 100, property.value, routingSpeed.upLevelSpeed, routingSpeed.downLevelSpeed);
+            var upLevel = (currentPropertyValue * 100) < property.value + (routingSpeed.upLevelSpeed * (100 - property.value));
+            var downLevel = (currentPropertyValue * 100) >= property.value + (routingSpeed.downLevelSpeed * (100 - property.value));
 
-        var currentIndex = config.governance.levels.indexOf(currentLevel);
-        var newindex = parseInt(config.governance.levels.indexOf(currentLevel));
-        if (upLevel && newindex != config.governance.levels.length - 1) {
-            newindex++;
-        } else if (downLevel && newindex !== 0) {
-            newindex--;
+            var currentIndex = config.governance.levels.indexOf(currentLevel);
+            var newindex = parseInt(config.governance.levels.indexOf(currentLevel));
+            if (upLevel && newindex != config.governance.levels.length - 1) {
+                newindex++;
+            } else if (downLevel && newindex !== 0) {
+                newindex--;
+            }
+
+            if (currentIndex !== newindex) {
+                logger.info("Decided to route user=" + u);
+                userNewLevel.push({
+                    user: u,
+                    level: newindex
+                });
+            }
         }
 
-        if (currentIndex !== newindex) {
-            logger.info("Decided to route user=" + u);
-            userNewLevel.push({
-                user: u,
-                level: newindex
-            });
-        }
     }
 
     Promise.each(userNewLevel, function (element) {

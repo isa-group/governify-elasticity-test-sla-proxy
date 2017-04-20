@@ -41,24 +41,35 @@ function _doProxy(preProxyReq, preProxyRes) {
 
     if (user) {
         agreementStore.put(user);
-        request({
-            uri: url
-        }, function (err) {
 
-            if (err) {
-                metricsStore.increaseRequests(user); //per user
-                metricsStore.increaseRequests(null); //total
-                logger.error(err.toString());
-                preProxyRes.status(503).json(new Error(503, ip + " not responded"));
-            }
+        if (agreementStore.getOne(user)) {
 
-        }).on('response', function (res) {
+            request({
+                uri: url
+            }, function (err) {
+
+                if (err) {
+                    metricsStore.increaseRequests(user); //per user
+                    metricsStore.increaseRequests(null); //total
+                    logger.error(err.toString());
+                    preProxyRes.status(503).json(new Error(503, ip + " not responded"));
+                }
+
+            }).on('response', function (res) {
+
+                metricsStore.increaseThroughput(user);
+                metricsStore.increaseRequests(user, res); //per user
+                metricsStore.increaseRequests(null, res); //total
+
+            }).pipe(preProxyRes);
+
+        } else {
+            logger.proxy('UNAUTHORIZE request', url);
 
             metricsStore.increaseThroughput(user);
-            metricsStore.increaseRequests(user, res); //per user
-            metricsStore.increaseRequests(null, res); //total
+            preProxyRes.status(401).json(new Error(401, 'UNAUTHORIZE'));
+        }
 
-        }).pipe(preProxyRes);
 
     } else {
         logger.proxy('UNAUTHORIZE request', url);
