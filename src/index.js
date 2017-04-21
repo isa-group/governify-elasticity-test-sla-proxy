@@ -29,6 +29,10 @@ var express = require('express'),
     logger = require('./logger/logger'),
     cors = require('cors'),
     Promise = require('bluebird'),
+    jsyaml = require('js-yaml'),
+    path = require('path'),
+    fs = require('fs'),
+    swagger = require('swagger-tools'),
     config = require('./configurations/config');
 
 var proxy = require('./proxy/proxy'),
@@ -85,17 +89,26 @@ function _deploy() {
     return new Promise(function (resolve, reject) {
         logger.info('Set up SLA Proxy');
 
-        var server = app.listen(port, function (err) {
-            if (err) {
-                logger.error('Error occurs while SLA Proxy was been deployed');
-                reject(err);
-            } else {
-                logger.info('SLA Proxy is running on http://localhost:%s', port);
-                resolve(server);
-                routingManager.startRouting();
-                elasticityManager.startElasticityManagement();
-            }
+
+        var swaggerObject = jsyaml.safeLoad(fs.readFileSync(path.join(__dirname, '/api/swagger.v1.yaml'), 'utf8'));
+        swagger.initializeMiddleware(swaggerObject, function (middleware) {
+
+            app.use(middleware.swaggerUi());
+
+            var server = app.listen(port, function (err) {
+                if (err) {
+                    logger.error('Error occurs while SLA Proxy was been deployed');
+                    reject(err);
+                } else {
+                    logger.info('SLA Proxy is running on http://localhost:%s', port);
+                    logger.info('Serve the Swagger documents and Swagger UI on http://localhost:%s/docs', port);
+                    resolve(server);
+                    routingManager.startRouting();
+                    elasticityManager.startElasticityManagement();
+                }
+            });
         });
+
     });
 }
 

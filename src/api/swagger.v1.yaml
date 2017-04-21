@@ -63,15 +63,14 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-            
-  /registry/{name}:
+
     delete:
       summary: Delete a node
       description: |
         The DELETE method over registry endpoint remove a node with {name} from
         the *Proxy* registry
       parameters:
-        - name: name
+        - name: type
           in: path
           description: Name of the node that would be deleted.
           required: true
