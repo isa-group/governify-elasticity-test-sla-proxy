@@ -1,5 +1,5 @@
 /*!
-governify-elasticity-test-sla-proxy 0.0.3, built on: 2017-04-20
+governify-elasticity-test-sla-proxy 0.0.4, built on: 2017-04-21
 Copyright (C) 2017 ISA group
 http://www.isa.us.es/
 https://github.com/isa-group/governify-elasticity-test-sla-proxy
