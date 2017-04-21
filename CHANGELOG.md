@@ -1,3 +1,11 @@
+### v0.0.4 - 2017-31-21
+
+- [#39](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/39) - Fix updateElasticity checking 
+
+- [#32](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/32) - Add swagger UI 
+
+- [#31](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/31) - Add swagger definition
+
 ### v0.0.3 - 2017-31-20
 
 - [#35](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/35) - Fix `Cannot read property 'terms' of undefined` when route was calculating
