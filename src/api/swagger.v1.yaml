@@ -1,0 +1,433 @@
+---
+swagger: '2.0'
+info:
+  title: SLA Governance API
+  description: | 
+    This API permits you to get or update the SLA governance configuration of
+    the proxy.
+  version: "1.0.0"
+  
+schemes:
+  - http
+
+produces:
+  - application/json
+paths:
+  /registry:
+    get:
+      summary: Get nodes per level
+      description: |
+        The GET method over registry endpoint returns information about nodes 
+        that exist in the *Proxy* 
+      parameters: []
+      tags:
+        - Registry
+      responses:
+        200:
+          description: An object with diferent levels and its nodes
+          schema:
+            $ref: '#/definitions/Registry'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+  /registry/{type}:
+    post:
+      summary: Create a new node
+      description: |
+        The POST method over registry endpoint create a new nodes in the *Proxy* 
+        registry
+      parameters:
+        - name: type
+          in: path
+          description: Quality Level for the new node.
+          required: true
+          type: string
+        - name: ip
+          in: query
+          description: IP location of the new node IP:PORT
+          required: true
+          type: string
+      tags:
+        - Registry
+      responses:
+        200:
+          description: An object with the name of new node
+          schema: 
+            type: object
+            properties:
+              name:
+                type: string
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+  /registry/{name}:
+    delete:
+      summary: Delete a node
+      description: |
+        The DELETE method over registry endpoint remove a node with {name} from
+        the *Proxy* registry
+      parameters:
+        - name: name
+          in: path
+          description: Name of the node that would be deleted.
+          required: true
+          type: string
+      tags:
+        - Registry
+      responses:
+        200:
+          description: Node was deleted successfully
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'            
+            
+  /registry/routingtable:
+    get:
+      summary: Get route for each user
+      description: |
+        The GET method over registry/routingtable endpoint returns information 
+        about the level of quality for each user  
+      parameters: []
+      tags:
+        - Routes
+      responses:
+        200:
+          description: An object with users and its levels
+          schema:
+            $ref: '#/definitions/Table'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /registry/assignementtable:
+    get:
+      summary: Get assigned route for each user
+      description: |
+        The GET method over registry/assignementtable endpoint returns information 
+        about the level of quality that is assigned to each user  
+      parameters: []
+      tags:
+        - Routes
+      responses:
+        200:
+          description: An object with users and its levels
+          schema:
+            $ref: '#/definitions/Table'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /metrics:
+    get:
+      summary: Get all metrics stored
+      description: |
+        The GET method over metrics endpoint returns information 
+        about the state of each metrics (throughput and availability) of each
+        user and the proxy.
+      parameters: []
+      tags:
+        - Metrics
+      responses:
+        200:
+          description: An object with info of metrics 
+          schema:
+            $ref: '#/definitions/Metrics'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /metrics/throughput:
+    get:
+      summary: Get total throughput
+      description: |
+        The GET method over metrics/throughput endpoint returns information 
+        about the state of throughput metric.
+      parameters: []
+      tags:
+        - Metrics
+      responses:
+        200:
+          description: An object with info of throughput 
+          schema:
+            $ref: '#/definitions/ThroughputMetric'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'    
+            
+  /metrics/throughput/{user}:
+    get:
+      summary: Get user throughput
+      description: |
+        The GET method over metrics/throughput/:user endpoint returns information 
+        about the state of an user throughput metric.
+      parameters:
+        - name: user
+          in: path
+          description: User for quering throughput.
+          required: true
+          type: string
+      tags:
+        - Metrics
+      responses:
+        200:
+          description: An object with info of throughput 
+          schema:
+            $ref: '#/definitions/ThroughputMetric'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error' 
+
+  /metrics/availability:
+    get:
+      summary: Get total availability
+      description: |
+        The GET method over metrics/availability endpoint returns information 
+        about the state of throughput metric.
+      parameters: []
+      tags:
+        - Metrics
+      responses:
+        200:
+          description: An object with info of availability 
+          schema:
+            $ref: '#/definitions/AvailabilityMetric'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'    
+  /metrics/availability/{user}:
+    get:
+      summary: Get user availability
+      description: |
+        The GET method over metrics/availability/:user endpoint returns information 
+        about the state of an user throughput metric.
+      parameters:
+        - name: user
+          in: path
+          description: User for quering availability.
+          required: true
+          type: string
+      tags:
+        - Metrics
+      responses:
+        200:
+          description: An object with info of availability 
+          schema:
+            $ref: '#/definitions/AvailabilityMetric'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error' 
+
+  /configs:
+    get:
+      summary: Get governance configuration
+      description: |
+        The GET method over configs endpoint returns information 
+        about currently governance configuration on the proxy.
+      parameters: []
+      tags:
+        - Configuration
+      responses:
+        200:
+          description: An object with info of configuration 
+          schema:
+            $ref: '#/definitions/Config'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Update configuration
+      description: |
+        The POST method over configs endpoint update information 
+        about governance configuration on the proxy.
+      parameters:
+        - name: config
+          in: body
+          description: New values for governance configuration.
+          required: true
+          schema:
+            $ref: "#/definitions/newConfig"
+      tags:
+        - Configuration
+      responses:
+        200:
+          description: An object with info of configuration 
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  
+  newConfig:
+    type: object
+    properties:
+      id:
+        type: string
+        description: "Id of the Service which will be governed"
+      levels:
+        type: number
+        format: int32
+        description: "Number of levels in the topology"
+      datastore:
+        type: string
+        description: "URL of datastore"
+      instanceLimit:
+        type: number
+        format: int32
+        description: "Throughput limit of an instance"
+      updateElasticity:
+        type: boolean
+        description: "Decide whether manage the elasticity or does not manage"
+      initialInstances:
+        type: object
+        description: "Could be an object or an array"
+      elasticitySpeed:
+        type: object
+        description: "Could be an object or an array"
+      routingSpeed:
+        type: object
+        properties:
+          upLevelSpeed:
+            type: object
+            description: "Could be an object or an array"
+          downLevelSpeed:
+            type: object
+            description: "Could be an object or an array"
+      elasticityRules:
+        type: object
+        properties:
+          of:
+            type: string
+          with:
+            type: object
+            
+  Table:
+    type: object
+    additionalProperties:
+      type: string
+      
+  Metrics:
+    type: object
+    properties:
+      throughput:
+        type: object
+        properties:
+          total:
+            type: number
+            format: double
+          users:
+            type: object
+            additionalProperties:
+              type: number
+              format: double
+      availability:
+        type: object
+        properties:
+          total:
+            type: number
+            format: double
+          users:
+            type: object
+            additionalProperties:
+              type: number
+              format: double
+              
+  ThroughputMetric:
+    type: object
+    properties:
+      throughput:
+        type: number
+        format: double
+        
+  AvailabilityMetric:
+    type: object
+    properties:
+      availability:
+        type: number
+        format: double      
+        
+  Config:
+    type: object
+    properties:
+      urls:
+        type: object
+        additionalProperties:
+          type: string
+      governance:
+        type: object
+        properties:
+          service:
+            type: object
+            properties:
+              id:
+                type: string
+              unitTh:
+                type: string
+              scalable:
+                type: boolean
+          levels:
+            type: array
+            items:
+              type: string
+          elasticitySpeed:
+            type: object
+            additionalProperties:
+              type: number
+              format: double
+          routingSpeed:
+            type: object
+            additionalProperties:
+              type: object
+              properties:
+                upLevelSpeed:
+                  type: number
+                  format: double
+                downLevelSpeed:
+                  type: number
+                  format: double
+          minInstance:
+            type: object
+            additionalProperties:
+              type: number
+              format: int32
+            
+  Registry:
+    type: object
+    additionalProperties:
+      type: array
+      items:
+        $ref: '#/definitions/Node'
+  
+  Node:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+      ip:
+        type: string
+        
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
