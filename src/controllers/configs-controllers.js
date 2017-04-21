@@ -51,7 +51,7 @@ function _post(req, res) {
         config.urls.store = newConfig.datastore;
 
         //static configurations
-        if (!newConfig.id || !newConfig.instanceLimit || !newConfig.updateElasticity) {
+        if (!newConfig.id || !newConfig.instanceLimit || newConfig.updateElasticity === null || newConfig.updateElasticity === undefined) {
             logger.error('BAD REQUEST: id, instanceLimit and updateElasticity are require');
             return res.status(400).json(new Error(400, 'BAD REQUEST: id, instanceLimit and updateElasticity are require'));
         }
