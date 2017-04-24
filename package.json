@@ -48,7 +48,7 @@
     "name": "ISA group",
     "web": "http://www.isa.us.es/"
   },
-  "license": "GPL-3.0+",
+  "license": "GPL-2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/isa-group/governify-elasticity-test-sla-proxy.git",

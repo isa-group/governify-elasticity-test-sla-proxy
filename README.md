@@ -5,6 +5,8 @@ between different quality levels and it builds their elasticity rules. Mixing bo
 
 ## Copyright notice
 
+**governify-elasticity-test-sla-proxy** is open-source software available under the GNU General Public License (GPL) version 2 (GPL v2).
+
 All including documentation and code are copyrighted and the copyright is owned by [ISA Group](http://www.isa.us.es), 
 [University of Sevilla](http://www.us.es), unauthorized reproduction or distribution of this copyrighted work is illegal.
 For commercial licensing terms, please [contact](./extra/contact.md) for any inquiry.
