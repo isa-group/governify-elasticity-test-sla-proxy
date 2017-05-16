@@ -45,7 +45,8 @@ function _doProxy(preProxyReq, preProxyRes) {
         if (agreementStore.getOne(user)) {
 
             request({
-                uri: url
+                uri: url,
+                timeout: 10 * 1000
             }, function (err) {
 
                 if (err) {
