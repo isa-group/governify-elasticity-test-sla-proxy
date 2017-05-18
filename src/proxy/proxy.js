@@ -46,7 +46,7 @@ function _doProxy(preProxyReq, preProxyRes) {
 
             request({
                 uri: url,
-                timeout: 10 * 1000
+                timeout: 30 * 1000
             }, function (err) {
 
                 if (err) {
