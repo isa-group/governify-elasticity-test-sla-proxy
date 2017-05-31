@@ -1,3 +1,9 @@
+### v0.0.5 - 2017-41-31
+
+- [#45](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/45) - Add timeout on proxy request
+
+- [#43](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/43) - Change license version
+
 ### v0.0.4 - 2017-31-21
 
 - [#39](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/39) - Fix updateElasticity checking 
