@@ -109,7 +109,7 @@ module.exports = function (grunt) {
                 afterRelease: [], // IS NOT READY YET
                 updateVars: ['pkg'], //NOT CHANGE
                 github: {
-                    repo: "isa-group/governify-elasticity-test-sla-proxy",
+                    repo: "isa-group/governify-elasticity-test-sla-router",
                     accessTokenVar: "GITHUB_ACCESS_TOKEN", //SET ENVIRONMENT VARIABLE WITH THIS NAME
                     usernameVar: "GITHUB_USERNAME" //SET ENVIRONMENT VARIABLE WITH THIS NAME
                 }
@@ -126,25 +126,25 @@ module.exports = function (grunt) {
 
         //USE THIS TASK FOR BUILDING AND PUSHING docker images
         dockerize: {
-            'governify-elasticity-test-sla-proxy-latest': {
+            'governify-elasticity-test-sla-router-latest': {
                 options: {
                     auth: {
                         email: "DOCKER_HUB_EMAIL", //SET ENVIRONMENT VARIABLE WITH THIS NAME
                         username: "DOCKER_HUB_USERNAME", //SET ENVIRONMENT VARIABLE WITH THIS NAME
                         password: "DOCKER_HUB_PASSWORD" //SET ENVIRONMENT VARIABLE WITH THIS NAME
                     },
-                    name: 'governify-elasticity-test-sla-proxy',
+                    name: 'governify-elasticity-test-sla-router',
                     push: true
                 }
             },
-            'governify-elasticity-test-sla-proxy-version': {
+            'governify-elasticity-test-sla-router-version': {
                 options: {
                     auth: {
                         email: "DOCKER_HUB_EMAIL", //SET ENVIRONMENT VARIABLE WITH THIS NAME
                         username: "DOCKER_HUB_USERNAME", //SET ENVIRONMENT VARIABLE WITH THIS NAME
                         password: "DOCKER_HUB_PASSWORD" //SET ENVIRONMENT VARIABLE WITH THIS NAME
                     },
-                    name: 'governify-elasticity-test-sla-proxy',
+                    name: 'governify-elasticity-test-sla-router',
                     tag: '<%= pkg.version %>',
                     push: true
                 }
