@@ -1,19 +1,19 @@
 {
-  "name": "governify-elasticity-test-sla-proxy",
-  "description": "Proxy for governing the elasticity in API's",
+  "name": "governify-elasticity-test-sla-router",
+  "description": "Router driven by SLA fullfilment",
   "main": "index.js",
   "authors": [{
     "name": "ISA group",
     "web": "http://www.isa.us.es/"
   }],
-  "license": "GPL-3.0+",
+  "license": "GPL-2.0+",
   "keywords": [
     "sla",
-    "proxy",
+    "router",
     "elasticity",
     "governance"
   ],
-  "homepage": "https://github.com/isa-group/governify-elasticity-test-sla-proxy",
+  "homepage": "https://github.com/isa-group/governify-elasticity-test-sla-router",
   "ignore": [
     "**/.*",
     "node_modules",

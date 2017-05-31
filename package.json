@@ -1,9 +1,9 @@
 {
-  "name": "governify-elasticity-test-sla-proxy",
+  "name": "governify-elasticity-test-sla-router",
   "buildOn": "2017-05-31",
   "version": "0.0.5",
-  "description": "Proxy for governing the elasticity in API's",
-  "homepage": "https://github.com/isa-group/governify-elasticity-test-sla-proxy",
+  "description": "Router driven by SLA fullfilment",
+  "homepage": "https://github.com/isa-group/governify-elasticity-test-sla-router",
   "main": "index.js",
   "dependencies": {
     "bluebird": "^3.4.7",
@@ -40,7 +40,7 @@
   },
   "keywords": [
     "sla",
-    "proxy",
+    "router",
     "elasticity",
     "governance"
   ],
@@ -51,10 +51,10 @@
   "license": "GPL-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/isa-group/governify-elasticity-test-sla-proxy.git",
-    "github": "http://github.com/isa-group/governify-elasticity-test-sla-proxy"
+    "url": "git://github.com/isa-group/governify-elasticity-test-sla-router.git",
+    "github": "http://github.com/isa-group/governify-elasticity-test-sla-router"
   },
   "docker": {
-    "url": "https://hub.docker.com/r/isa-group/governify-elasticity-test-sla-proxy"
+    "url": "https://hub.docker.com/r/isa-group/governify-elasticity-test-sla-router"
   }
 }
