@@ -17,9 +17,9 @@ For technical inquiry please contact to [engineering team](./extra/about.md).
 
 [![Build Status](https://travis-ci.org/isa-group/governify-elasticity-test-sla-proxy.svg?branch=master)](https://travis-ci.org/http://github.com/isa-group/governify-elasticity-test-sla-proxy)
 
-The version 0.0.4 is the latest stable version of governify-elasticity-test-sla-proxy component.
-see [release note](http://github.com/isa-group/governify-elasticity-test-sla-proxy/releases/tag/0.0.4) for details.
+The version 0.0.5 is the latest stable version of governify-elasticity-test-sla-proxy component.
+see [release note](http://github.com/isa-group/governify-elasticity-test-sla-proxy/releases/tag/0.0.5) for details.
 
 For running:
 
-- Download latest version from [0.0.4](http://github.com/isa-group/governify-elasticity-test-sla-proxy/releases/tag/0.0.4)
+- Download latest version from [0.0.5](http://github.com/isa-group/governify-elasticity-test-sla-proxy/releases/tag/0.0.5)

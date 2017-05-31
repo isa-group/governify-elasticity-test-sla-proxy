@@ -1,6 +1,6 @@
 {
   "name": "governify-elasticity-test-sla-proxy",
-  "buildOn": "2017-04-21",
+  "buildOn": "2017-05-31",
   "version": "0.0.5",
   "description": "Proxy for governing the elasticity in API's",
   "homepage": "https://github.com/isa-group/governify-elasticity-test-sla-proxy",
