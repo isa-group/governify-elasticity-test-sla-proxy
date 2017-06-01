@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 var config = require('../configurations/config'),
     logger = require('../logger/logger'),
+    nodesStore = require('../stores/nodes'),
     Error = require('../domain/json-error').Error;
 
 module.exports = {
@@ -84,6 +85,13 @@ function _post(req, res) {
             config.governance.routingSpeed[levelTag].downLevelSpeed = downLevelDistribution[l];
             config.governance.minInstances[levelTag] = instancesDistribution[l];
 
+        }
+
+        if (config.deploymentType === "kubernetes") {
+            nodesStore.deleteAll();
+            config.governance.levels.forEach(function (level) {
+                nodesStore.put(level, level);
+            });
         }
 
         res.json();

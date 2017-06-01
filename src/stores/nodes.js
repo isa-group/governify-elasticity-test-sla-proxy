@@ -25,11 +25,11 @@ var id = 0;
 var developNodes = [{
     name: "node00",
     type: "l00",
-    ip: "aws1617-dab.herokuapp.com"
+    ip: "l00" // "aws1617-dab.herokuapp.com"
 }, {
-    name: "node00",
+    name: "node01",
     type: "l01",
-    ip: "aws1617-dab2.herokuapp.com"
+    ip: "l01" // "aws1617-dab2.herokuapp.com"
 }];
 
 var env = process.env.NODE_ENV || "development";
@@ -38,7 +38,8 @@ var nodes = env === "development" ? developNodes : [];
 module.exports = {
     put: _put,
     get: _get,
-    deleteOne: _deleteOne
+    deleteOne: _deleteOne,
+    deleteAll: _deleteAll
 };
 
 function _deleteOne(name) {
@@ -82,6 +83,10 @@ function _put(ip, type) {
     }
 
     return exists.name;
+}
+
+function _deleteAll() {
+    nodes = [];
 }
 
 function Node(ip, type) {

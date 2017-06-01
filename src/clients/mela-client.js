@@ -34,7 +34,11 @@ module.exports = {
 };
 
 
-var melaInfoInterval = setInterval(_loadMelaInfo, 10 * 1000);
+var melaInfoInterval;
+if (config.deploymentType == 'icomot') {
+    melaInfoInterval = setInterval(_loadMelaInfo, 10 * 1000);
+}
+
 
 function _loadMelaInfo() {
     var id = config.governance.service.id;

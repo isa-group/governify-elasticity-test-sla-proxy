@@ -1,4 +1,6 @@
 production:
+  deploymentType: kubernetes
+
   server: 
     port: 8080
   
@@ -30,12 +32,14 @@ production:
   logfile: './logs/pro-logs.log'
 
 development:
+  deploymentType: kubernetes
+
   server: 
     port: 3000
   
   urls: 
     rsybl: "http://localhost:8280/rSYBL/"  
-    store: "http://localhost:3001/api/v5/"
+    store: "http://datastore/api/v5/"
     mela: "http://localhost:8180/MELA-AnalysisService/"
 
   governance:
@@ -47,6 +51,7 @@ development:
 
     levels:
       - 'l00'
+      - 'l01'
 
     elasticitySpeed: {}
 
@@ -54,7 +59,10 @@ development:
       l00: 
         upLevelSpeed: 0.7
         downLevelSpeed: 0.8
-        
+      l01: 
+        upLevelSpeed: 0.7
+        downLevelSpeed: 0.8
+
     minInstances: {}
 
   loglevel: debug
@@ -62,6 +70,8 @@ development:
 
 
 test:
+  deploymentType: kubernetes
+  
   server: 
     port: 3000
   
