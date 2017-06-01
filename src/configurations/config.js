@@ -55,6 +55,8 @@ function _addConfiguration(uri, encoding) {
     for (var c in newConfigurations) {
         this[c] = newConfigurations[c];
     }
+
+    this.deploymentType = process.env.SLA_ROUTER_DEPLOYMENTTYPE || this.deploymentType;
 }
 
 /*

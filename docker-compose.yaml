@@ -1,0 +1,43 @@
+version: "2"
+
+services:
+
+  # PETS levels
+  pets_l00:
+    image: darteaga/pets:1.0.1
+    environment: 
+      - NODE_ENV=production
+      - PETS_INITIAL_DATA=true
+    links: 
+      - mongo:mongodb
+  pets_l01:
+    image: darteaga/pets:1.0.1 
+    environment: 
+      - NODE_ENV=production
+    links: 
+      - mongo:mongodb
+
+  sla_router:
+    build: ./
+    links: 
+      - pets_l00:l00
+      - pets_l01:l01 
+      - datastore
+    environment: 
+      - NODE_ENV=development
+      - SLA_ROUTER_DEPLOYMENTTYPE=kubernetes
+    ports: 
+      - 30080:3000
+  
+  datastore:
+    image: isagroup/governify-elasticity-test-mock-datastore
+    environment: 
+      - NODE_ENV=production
+    links:
+      - mongo:mongodb
+    ports: 
+      - 30180:80
+
+  mongo:
+    image: mongo:latest
+

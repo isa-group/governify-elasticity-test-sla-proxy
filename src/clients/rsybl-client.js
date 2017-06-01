@@ -42,7 +42,11 @@ module.exports = {
     putRsyblInfo: _putRsyblInfo
 };
 
-var rsyblInfoInterval = setInterval(_loadRsyblInfo, 10 * 1000);
+
+var rsyblInfoInterval;
+if (config.deploymentType == "icomot") {
+    rsyblInfoInterval = setInterval(_loadRsyblInfo, 10 * 1000);
+}
 
 function _putRsyblInfo(rsybl) {
     return new Promise(function (resolve, reject) {

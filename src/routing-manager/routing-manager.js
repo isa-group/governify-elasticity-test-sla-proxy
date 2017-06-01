@@ -119,22 +119,26 @@ function _changeLevelProccess(user, newindex) {
 
 function _levelIsPrepared(index) {
     return new Promise(function (resolve, reject) {
-        logger.routingManager('GET info from MELA Client');
-        melaClient.getMetricOfServiceUnit(config.governance.levels[index], "numberOfVMs").then(function (numberOfVMs) {
-            //implement getThroughputInPerLevel
-            if (!numberOfVMs || numberOfVMs === 0) {
-                return reject(1);
-            }
-            var thAssigned = _getThroughputInLevel(config.governance.levels[index]) || 1;
-            logger.routingManager('Throughput in level %s, is: %s', config.governance.levels[index], thAssigned);
+        if (config.deploymentType == "icomot") {
+            logger.routingManager('GET info from MELA Client');
+            melaClient.getMetricOfServiceUnit(config.governance.levels[index], "numberOfVMs").then(function (numberOfVMs) {
+                //implement getThroughputInPerLevel
+                if (!numberOfVMs || numberOfVMs === 0) {
+                    return reject(1);
+                }
+                var thAssigned = _getThroughputInLevel(config.governance.levels[index]) || 1;
+                logger.routingManager('Throughput in level %s, is: %s', config.governance.levels[index], thAssigned);
 
-            if (thAssigned / config.governance.service.unitTh > numberOfVMs) {
-                resolve(false);
-            } else {
-                resolve(true);
-            }
+                if (thAssigned / config.governance.service.unitTh > numberOfVMs) {
+                    resolve(false);
+                } else {
+                    resolve(true);
+                }
 
-        }, reject);
+            }, reject);
+        } else if (config.deploymentType == "kubernetes") {
+            resolve(true);
+        }
     });
 }
 

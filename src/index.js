@@ -43,6 +43,8 @@ var proxy = require('./proxy/proxy'),
 
 var routingManager = require('./routing-manager/routing-manager'),
     elasticityManager = require('./elasticity-manager/elasticity-manager');
+
+var nodesStore = require('./stores/nodes');
 /*
  * Export functions and Objects
  */
@@ -89,6 +91,12 @@ function _deploy() {
     return new Promise(function (resolve, reject) {
         logger.info('Set up SLA Proxy');
 
+        if (config.deploymentType == 'kubernetes') {
+            nodesStore.deleteAll();
+            config.governance.levels.forEach(function (level) {
+                nodesStore.put(level, level);
+            });
+        }
 
         var swaggerObject = jsyaml.safeLoad(fs.readFileSync(path.join(__dirname, '/api/swagger.v1.yaml'), 'utf8'));
         swagger.initializeMiddleware(swaggerObject, function (middleware) {
@@ -104,7 +112,10 @@ function _deploy() {
                     logger.info('Serve the Swagger documents and Swagger UI on http://localhost:%s/docs', port);
                     resolve(server);
                     routingManager.startRouting();
-                    elasticityManager.startElasticityManagement();
+
+                    if (config.deploymentType == 'icomot') {
+                        elasticityManager.startElasticityManagement();
+                    }
                 }
             });
         });
@@ -122,7 +133,10 @@ function _undeploy(server) {
             } else {
                 logger.info('SLA Proxy was turned off');
                 routingManager.stopRouting();
-                elasticityManager.stopElasticityManagement();
+
+                if (config.deploymentType == 'icomot') {
+                    elasticityManager.startElasticityManagement();
+                }
                 resolve();
             }
         });
