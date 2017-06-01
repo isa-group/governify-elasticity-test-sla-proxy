@@ -70,7 +70,7 @@ development:
 
 
 test:
-  deploymentType: kubernetes
+  deploymentType: icomot
   
   server: 
     port: 3000
