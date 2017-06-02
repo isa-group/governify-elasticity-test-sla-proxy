@@ -1,6 +1,6 @@
 {
   "name": "governify-elasticity-test-sla-router",
-  "buildOn": "2017-05-31",
+  "buildOn": "2017-06-02",
   "version": "1.0.0",
   "description": "Router driven by SLA fullfilment",
   "homepage": "https://github.com/isa-group/governify-elasticity-test-sla-router",

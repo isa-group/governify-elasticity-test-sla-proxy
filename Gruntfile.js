@@ -1,8 +1,8 @@
 /*!
-governify-elasticity-test-sla-proxy 0.0.5, built on: 2017-05-31
+governify-elasticity-test-sla-router 1.0.0, built on: 2017-06-02
 Copyright (C) 2017 ISA group
 http://www.isa.us.es/
-https://github.com/isa-group/governify-elasticity-test-sla-proxy
+https://github.com/isa-group/governify-elasticity-test-sla-router
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -164,7 +164,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['jshint', 'mochaTest']);
 
     //BUILD TASK
-    grunt.registerTask('build', ['test', 'buildOn']);
+    grunt.registerTask('build', ['test', 'buildOn', 'usebanner']);
 
     //DEVELOPMENT TASK
     grunt.registerTask('dev', ['watch']);
