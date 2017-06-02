@@ -1,3 +1,13 @@
+### v1.0.0 - 2017-51-2
+
+- [#50](https://github.com/isa-group/governify-elasticity-test-sla-router/issues/50) - Change de name from sla-proxy to sla-router
+
+- [#49](https://github.com/isa-group/governify-elasticity-test-sla-router/issues/49) - Add option to desactivate elasticity functionalities 
+
+- [#48](https://github.com/isa-group/governify-elasticity-test-sla-router/issues/48) - Implement all router logic depends on Kubernetes infrastructure 
+
+- [#47](https://github.com/isa-group/governify-elasticity-test-sla-router/issues/47) - Add dockerize configuration and update travis file to support it
+
 ### v0.0.5 - 2017-41-31
 
 - [#45](https://github.com/isa-group/governify-elasticity-test-sla-proxy/issues/45) - Add timeout on proxy request
